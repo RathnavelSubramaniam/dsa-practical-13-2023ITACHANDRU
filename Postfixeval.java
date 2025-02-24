@@ -78,14 +78,60 @@ class evalpostfix
     public boolean isOperand(char ch) 
     {
      
-    // TYPE YOUR CODE CODE
+   return Character.isDigit(ch);
        
     }
     public int eval() 
     {
-         // TYPE YOUR CODE CODE
+        for (int i = 0; i < postfix.length(); i++) {
+            char ch = postfix.charAt(i);
+
+            // If operand, push it to stack
+            if (isOperand(ch)) {
+                st.push(ch - '0');  // Convert char to int
+            } else {
+                // If operator, pop two elements from stack, apply operator and push result
+                if (st.isEmpty()) {
+                    System.out.println("Invalid Postfix Expression");
+                    return -1;
+                }
+                int operand2 = st.pop();
+                if (st.isEmpty()) {
+                    System.out.println("Invalid Postfix Expression");
+                    return -1;
+                }
+                int operand1 = st.pop();
+
+                switch (ch) {
+                    case '+':
+                        st.push(operand1 + operand2);
+                        break;
+                    case '-':
+                        st.push(operand1 - operand2);
+                        break;
+                    case '*':
+                        st.push(operand1 * operand2);
+                        break;
+                    case '/':
+                        st.push(operand1 / operand2);
+                        break;
+                    default:
+                        System.out.println("Invalid operator encountered: " + ch);
+                        return -1;
+                }
+            }
+        }
+
+        // If everything is fine, the stack will have only one element which is the result
+        if (st.isEmpty()) {
+            System.out.println("Invalid Postfix Expression");
+            return -1;
+        }
+        return st.pop();
+    }
+}
         
-     }
+     
 public class Postfixeval 
 {
     public static void main(String[] args) 
@@ -101,3 +147,4 @@ public class Postfixeval
        System.out.println("Invlalid Postfix String");
     }
 }
+
